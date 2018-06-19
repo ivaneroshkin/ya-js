@@ -52,8 +52,8 @@ module.exports = function(command) {
   if (commandName === 'REMOVE_PHONE') {
     var removeContact = function(params) {
       // получить номер и массив для сортировки
-      phoneBook.filtered = [];
       var newCounter = 0;
+      phoneBook.filtered = [];
       var deletePhone = words[1];
       phoneBook.contacts.forEach(element => {
         var newArray = element.split(' ');
@@ -64,6 +64,7 @@ module.exports = function(command) {
           const element = findingArray[k];
           var replacedElement = element.replace(',', '');
           if (replacedElement === deletePhone) {
+            newCounter = 1;
           } else {
             filteredArray.push(replacedElement);
           }
@@ -71,13 +72,10 @@ module.exports = function(command) {
         var resultString;
         if (filteredArray.length > 1) {
           resultString = filteredArray.join(', ');
-          newCounter = 1;
         } else if (filteredArray.length === 1) {
           resultString = filteredArray.join();
-          newCounter = 1;
         } else {
           resultString = '';
-          newCounter = 1;
         }
         // проверка длины массива
         if (resultString === '') {
@@ -89,10 +87,11 @@ module.exports = function(command) {
         }
       });
       phoneBook.contacts = phoneBook.filtered;
-      if (newCounter === 0) {
-        return false;
-      } else {
+
+      if (newCounter) {
         return true;
+      } else {
+        return false;
       }
     };
     return removeContact(command);
