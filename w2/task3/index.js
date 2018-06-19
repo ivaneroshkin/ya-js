@@ -53,12 +53,10 @@ module.exports = function(command) {
     var removeContact = function(params) {
       // получить номер и массив для сортировки
       phoneBook.filtered = [];
+      var newCounter = 0;
       var deletePhone = words[1];
       phoneBook.contacts.forEach(element => {
         var newArray = element.split(' ');
-        // var deleteNumber = '666';
-        // var newStr = 'ivan: 555, 666, 668';
-        // var newA = newStr.split(' ');
         var findingName = newArray.slice(0, 1);
         var findingArray = newArray.slice(1);
         var filteredArray = [];
@@ -73,10 +71,13 @@ module.exports = function(command) {
         var resultString;
         if (filteredArray.length > 1) {
           resultString = filteredArray.join(', ');
+          newCounter = 1;
         } else if (filteredArray.length === 1) {
           resultString = filteredArray.join();
+          newCounter = 1;
         } else {
           resultString = '';
+          newCounter = 1;
         }
         // проверка длины массива
         if (resultString === '') {
@@ -88,9 +89,13 @@ module.exports = function(command) {
         }
       });
       phoneBook.contacts = phoneBook.filtered;
+      if (newCounter === 0) {
+        return false;
+      } else {
+        return true;
+      }
     };
-    removeContact(command);
-    return true;
+    return removeContact(command);
   }
 
   // обработка команды 'SHOW'
