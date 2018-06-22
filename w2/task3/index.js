@@ -11,7 +11,7 @@ module.exports = function(command) {
 
   // Обработка команды ADD
   if (commandName === 'ADD') {
-    var addContact = function(string) {
+    var addContact = function() {
       // генерация имени
       var nameContact = words[1];
       var newNameContact = nameContact + ':';
@@ -45,12 +45,12 @@ module.exports = function(command) {
         phoneBook.contacts.sort();
       }
     };
-    return addContact(command);
+    return addContact();
   }
 
   // обработка команды 'REMOVE_PHONE'
   if (commandName === 'REMOVE_PHONE') {
-    var removeContact = function(params) {
+    var removeContact = function() {
       // получить номер и массив для сортировки
       var newCounter = 0;
       phoneBook.filtered = [];
@@ -94,7 +94,7 @@ module.exports = function(command) {
         return false;
       }
     };
-    return removeContact(command);
+    return removeContact();
   }
 
   // обработка команды 'SHOW'
