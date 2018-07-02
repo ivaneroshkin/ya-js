@@ -1,30 +1,50 @@
 // Телефонная книга
-var phoneBook = {};
+const phoneBook = {};
 
 /**
  * @param {String} command
  * @returns {*} - результат зависит от команды
  */
+module.exports = function(command) {
+  const words = command.split(' ');
+  const commandName = words[0];
 
-var addContact = function(command) {
-  var words = command.split(' ');
-  var commandName = words[0];
+  // Обработка команды 'ADD'
+  if (commandName === 'ADD') {
+    return addContact(command);
+  }
+
+  // Обработка команды 'REMOVE_PHONE'
+  if (commandName === 'REMOVE_PHONE') {
+    return removeContact(command);
+  }
+
+  // Обработка команды 'SHOW'
+  if (commandName === 'SHOW') {
+    return showPhoneBook();
+  }
+};
+
+function addContact(command) {
+  const words = command.split(' ');
+  const commandName = words[0];
   // генерация имени
-  var nameContact = words[1];
-  var newNameContact = nameContact + ':';
+  const nameContact = words[1];
+  const newNameContact = nameContact + ':';
   // генерация номеров
-  var numbersContact = words.slice(2);
-  var newNumbersContact = numbersContact.join(' ');
-  var contactString = newNameContact + ' ' + newNumbersContact;
+  const numbersContact = words.slice(2);
+  const newNumbersContact = numbersContact.join(' ');
+  const contactString = newNameContact + ' ' + newNumbersContact;
+
   // проверка массива
   if (Array.isArray(phoneBook.contacts)) {
     // добавление телефона к старому контакту или добавление нового
     let counter = 0;
     phoneBook.contacts.forEach(str => {
-      var firstWord = str.substr(0, str.indexOf(' '));
+      const firstWord = str.substr(0, str.indexOf(' '));
       if (firstWord === newNameContact) {
-        var oldContact = str + ', ' + newNumbersContact;
-        var indexStr = phoneBook.contacts.indexOf(str);
+        const oldContact = str + ', ' + newNumbersContact;
+        const indexStr = phoneBook.contacts.indexOf(str);
         phoneBook.contacts.splice(indexStr, 1);
         phoneBook.contacts.push(oldContact);
         phoneBook.contacts.sort();
@@ -41,34 +61,34 @@ var addContact = function(command) {
     phoneBook.contacts.push(contactString);
     phoneBook.contacts.sort();
   }
-};
+}
 
-var showPhoneBook = function() {
+function showPhoneBook() {
   return phoneBook.contacts;
-};
+}
 
-var removeContact = function(command) {
-  var words = command.split(' ');
-  var commandName = words[0];
+function removeContact(command) {
+  const words = command.split(' ');
+  const commandName = words[0];
   // получить номер и массив для сортировки
-  var newCounter = 0;
+  let newCounter = 0;
   phoneBook.filtered = [];
-  var deletePhone = words[1];
+  const deletePhone = words[1];
   phoneBook.contacts.forEach(element => {
-    var newArray = element.split(' ');
-    var findingName = newArray.slice(0, 1);
-    var findingArray = newArray.slice(1);
-    var filteredArray = [];
+    const newArray = element.split(' ');
+    const findingName = newArray.slice(0, 1);
+    const findingArray = newArray.slice(1);
+    const filteredArray = [];
     for (let k = 0; k < findingArray.length; k++) {
       const element = findingArray[k];
-      var replacedElement = element.replace(',', '');
+      const replacedElement = element.replace(',', '');
       if (replacedElement === deletePhone) {
         newCounter = 1;
       } else {
         filteredArray.push(replacedElement);
       }
     }
-    var resultString;
+    let resultString = '';
     if (filteredArray.length > 1) {
       resultString = filteredArray.join(', ');
     } else if (filteredArray.length === 1) {
@@ -80,7 +100,7 @@ var removeContact = function(command) {
     if (resultString === '') {
       return;
     } else {
-      var final = findingName + ' ' + resultString;
+      const final = findingName + ' ' + resultString;
       element = final;
       phoneBook.filtered.push(element);
     }
@@ -92,24 +112,4 @@ var removeContact = function(command) {
   } else {
     return false;
   }
-};
-
-module.exports = function(command) {
-  var words = command.split(' ');
-  var commandName = words[0];
-
-  // Обработка команды ADD
-  if (commandName === 'ADD') {
-    return addContact(command);
-  }
-
-  // обработка команды 'REMOVE_PHONE'
-  if (commandName === 'REMOVE_PHONE') {
-    return removeContact(command);
-  }
-
-  // обработка команды 'SHOW'
-  if (commandName === 'SHOW') {
-    return showPhoneBook();
-  }
-};
+}
