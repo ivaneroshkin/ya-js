@@ -30,8 +30,9 @@ function validateForm(obj) {
     }
 
     if (event.target.dataset.validator === 'number') {
-      // need validate min-max
-      if (/[0-9]/i.test(event.target.value) || event.target.value === '') {
+      if (/\d+$/i.test(event.target.value)) {
+        return;
+      } else if (event.target.value === '') {
         return;
       }
       event.target.classList.add(`${inputError}`);
@@ -57,7 +58,7 @@ function validateForm(obj) {
   }
 
   function validateAge() {
-    if (/[0-9]/i.test(profileAge.value) || profileAge.value === '') {
+    if (/^\d+$/i.test(profileAge.value) || profileAge.value === '') {
       return true;
     }
   }
