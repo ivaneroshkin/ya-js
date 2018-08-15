@@ -4,7 +4,6 @@ function validateForm(obj) {
   const inputError = obj.inputErrorClass;
   const formValid = obj.formValidClass;
   const formInvalid = obj.formInvalidClass;
-
   const mainForm = document.querySelector(`#${typeForm}`);
   const profileName = document.querySelector('#profile-name');
   const profileAge = document.querySelector('#profile-age');
@@ -14,10 +13,6 @@ function validateForm(obj) {
   function onFieldFocus(event) {
     if (event.target.classList.contains(`${inputError}`)) {
       event.target.classList.remove(`${inputError}`);
-    }
-
-    if (event.target.dataset.hasOwnProperty('required')) {
-      event.target.setAttribute('required', '');
     }
   }
 
@@ -55,6 +50,7 @@ function validateForm(obj) {
     if (/^[a-zA-Zа-яёА-ЯЁ]+$/i.test(profileName.value)) {
       return true;
     }
+    profileName.classList.add(`${inputError}`);
   }
 
   function validateAge() {
@@ -97,18 +93,7 @@ function validateForm(obj) {
       mainForm.classList.add(`${formInvalid}`);
     }
   }
-
-  profileName.addEventListener('focus', onFieldFocus);
-  profileName.addEventListener('blur', onFieldBlur);
-
-  profileAge.addEventListener('focus', onFieldFocus);
-  profileAge.addEventListener('blur', onFieldBlur);
-
-  profilePhone.addEventListener('focus', onFieldFocus);
-  profilePhone.addEventListener('blur', onFieldBlur);
-
-  profileNumber.addEventListener('focus', onFieldFocus);
-  profileNumber.addEventListener('blur', onFieldBlur);
-
+  mainForm.addEventListener('focus', onFieldFocus, true);
+  mainForm.addEventListener('blur', onFieldBlur, true);
   mainForm.addEventListener('submit', onFieldSubmit);
 }
