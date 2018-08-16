@@ -25,9 +25,22 @@ function validateForm(obj) {
     }
 
     if (event.target.dataset.validator === 'number') {
-      if (/\d+$/i.test(event.target.value)) {
+      const min = event.target.dataset.validatorMin;
+      const max = event.target.dataset.validatorMax;
+      const numberValue = /\d+$/i.test(event.target.value);
+      if (event.target.value === '') {
         return;
-      } else if (event.target.value === '') {
+      } else if (min && max) {
+        if (
+          Number(max) < Number(event.target.value) ||
+          Number(min) > Number(event.target.value)
+        ) {
+          event.target.classList.add(`${inputError}`);
+        } else if (numberValue) {
+          return;
+        }
+        event.target.classList.add(`${inputError}`);
+      } else if (numberValue) {
         return;
       }
       event.target.classList.add(`${inputError}`);
@@ -54,7 +67,21 @@ function validateForm(obj) {
   }
 
   function validateAge() {
-    if (/^\d+$/i.test(profileAge.value) || profileAge.value === '') {
+    const minAge = profileAge.dataset.validatorMin;
+    const maxAge = profileAge.dataset.validatorMax;
+    const ageValue = /^\d+$/i.test(profileAge.value);
+    if (profileAge.value === '') {
+      return true;
+    } else if (minAge && maxAge) {
+      if (
+        Number(minAge) < Number(ageValue) &&
+        Number(maxAge) > Number(ageValue)
+      ) {
+        return true;
+      } else if (ageValue) {
+        return true;
+      }
+    } else if (ageValue) {
       return true;
     }
   }
